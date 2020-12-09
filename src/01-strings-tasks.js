@@ -275,7 +275,7 @@ function isString(value) {
  *   '3♣' => 2
  *     ...
  *   'Q♠' => 50
- *   'K♠' => 51
+ *   'K♠' => 51 1 7 3 6 4 5 2
  */
 function getCardId(value) {
   return value.replace(/(\w{1,2})(\W)/gm, (str, p1, p2) => {
