@@ -30,6 +30,19 @@
  */
 function willYouMarryMe(/* isPositiveAnswer */) {
   throw new Error('Not implemented');
+  // return new Promise((res, rej) => {
+  //   // eslint-disable-next-line no-unused-expressions
+  //   const a = isPositiveAnswer !== true ? 'Hooray!!! She said "Yes"!' : 'Oh no, she said "No".';
+  //   res(a);
+  //   rej('Wrong parameter is passed! Ask her again.');
+  //   if (typeof isPositiveAnswer !== 'boolean') {
+  //     // eslint-disable-next-line prefer-promise-reject-errors
+  //     rej(isPositiveAnswer);
+  //   } else {
+  //     // eslint-disable-next-line prefer-promise-reject-errors
+  //     rej('Wrong parameter is passed! Ask her again.');
+  //   }
+  // });
 }
 
 

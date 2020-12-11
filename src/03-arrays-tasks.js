@@ -504,15 +504,11 @@ function distinct(arr) {
  *   }
  */
 function group(array, keySelector, valueSelector) {
-  const res = new Map();
-  const country = array.map(keySelector)
-    .reduce((q1, q2) => (q1.indexOf(q2) > -1 ? q1 : q1.concat([q2])), [])
-    .map((elem) => [elem, group.map((item) => item ))
-  const city = array.map(valueSelector);
-  // console.log(res.set(country[0], [city[0], city[3], city[4]])
-  //   .set(country[1], [city[1], city[2]]).set(country[5], [city[5]]));
-  console.log(city, country);
-  return res;
+  return array.reduce((prev, next) => {
+    const key = keySelector(next);
+    prev.set(key, (prev.get(key) || []).concat(valueSelector(next)));
+    return prev;
+  }, new Map());
 }
 
 /**
@@ -528,8 +524,8 @@ function group(array, keySelector, valueSelector) {
  *   [[1, 2], [3, 4], [5, 6]], (x) => x     =>   [ 1, 2, 3, 4, 5, 6 ]
  *   ['one','two','three'], x=>x.split('')  =>   ['o','n','e','t','w','o','t','h','r','e','e']
  */
-function selectMany(/* arr, childrenSelector */) {
-  throw new Error('Not implemented');
+function selectMany(arr, childrenSelector) {
+  return arr.map(childrenSelector).flat(Infinity);
 }
 
 /**
@@ -542,10 +538,10 @@ function selectMany(/* arr, childrenSelector */) {
  * @example
  *   [[1, 2], [3, 4], [5, 6]], [0,0]  => 1        (arr[0][0])
  *   ['one','two','three'], [2]       => 'three'  (arr[2])
- *   [[[ 1, 2, 3]]], [ 0, 0, 1 ]      => 2        (arr[0][0][1])
+ *   [[[ 1, 2, 3]]], [ 0, 0, 1 ]       => 2        (arr[0][0][1])
  */
-function getElementByIndexes(/* arr, indexes */) {
-  throw new Error('Not implemented');
+function getElementByIndexes(arr, indexes) {
+  return indexes.reduce((q1, q2) => q1[q2], arr);
 }
 
 /**
@@ -566,8 +562,11 @@ function getElementByIndexes(/* arr, indexes */) {
  *   [ 1, 2, 3, 4, 5, 6, 7, 8 ]   =>  [ 5, 6, 7, 8, 1, 2, 3, 4 ]
  *
  */
-function swapHeadAndTail(/* arr */) {
-  throw new Error('Not implemented');
+function swapHeadAndTail(arr) {
+  const half = Math.trunc(arr.length / 2);
+  const head = arr.splice(0, half);
+  const tail = arr.splice(arr.length - half, half);
+  return [...tail, ...arr, ...head];
 }
 
 module.exports = {
