@@ -28,21 +28,11 @@
  *      .catch((error) => console.log(error.message)) // 'Error: Wrong parameter is passed!
  *                                                    //  Ask her again.';
  */
-function willYouMarryMe(/* isPositiveAnswer */) {
-  throw new Error('Not implemented');
-  // return new Promise((res, rej) => {
-  //   // eslint-disable-next-line no-unused-expressions
-  //   const a = isPositiveAnswer !== true ? 'Hooray!!! She said "Yes"!' : 'Oh no, she said "No".';
-  //   res(a);
-  //   rej('Wrong parameter is passed! Ask her again.');
-  //   if (typeof isPositiveAnswer !== 'boolean') {
-  //     // eslint-disable-next-line prefer-promise-reject-errors
-  //     rej(isPositiveAnswer);
-  //   } else {
-  //     // eslint-disable-next-line prefer-promise-reject-errors
-  //     rej('Wrong parameter is passed! Ask her again.');
-  //   }
-  // });
+function willYouMarryMe(isPositiveAnswer) {
+  return new Promise((res, rej) => {
+    if (isPositiveAnswer === undefined) rej(new Error('Wrong parameter is passed! Ask her again.'));
+    res(isPositiveAnswer ? 'Hooray!!! She said "Yes"!' : 'Oh no, she said "No".');
+  });
 }
 
 
@@ -61,8 +51,8 @@ function willYouMarryMe(/* isPositiveAnswer */) {
  *    })
  *
  */
-function processAllPromises(/* array */) {
-  throw new Error('Not implemented');
+function processAllPromises(array) {
+  return Promise.all(array).then((values) => values);
 }
 
 /**
@@ -84,8 +74,8 @@ function processAllPromises(/* array */) {
  *    })
  *
  */
-function getFastestPromise(/* array */) {
-  throw new Error('Not implemented');
+function getFastestPromise(array) {
+  return Promise.race(array).then((res) => res);
 }
 
 /**
@@ -107,6 +97,19 @@ function getFastestPromise(/* array */) {
  */
 function chainPromises(/* array, action */) {
   throw new Error('Not implemented');
+  // const chain = array.reduce(async (prev, next) => {
+  //   try {
+  //     const prevResult = await prev;
+  //     const nextResult = await next;
+  //     if (prevResult && nextResult) {
+  //       return action(prevResult, nextResult);
+  //     }
+  //     return prev;
+  //   } catch (error) {
+  //     return prev;
+  //   }
+  // });
+  // return chain.then((value) => value).catch((error) => error);
 }
 
 module.exports = {
