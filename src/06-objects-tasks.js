@@ -118,32 +118,63 @@ function fromJSON(proto, json) {
  */
 
 const cssSelectorBuilder = {
-  element(/* value */) {
-    throw new Error('Not implemented');
+  string: '',
+  element(value) {
+    this.checkOrderExecution(1);
+    return this.createObj(`${this.string}${value}`, 1);
   },
 
-  id(/* value */) {
-    throw new Error('Not implemented');
+  id(value) {
+    this.checkOrderExecution(2);
+    return this.createObj(`${this.string}#${value}`, 2);
   },
 
-  class(/* value */) {
-    throw new Error('Not implemented');
+  class(value) {
+    this.checkOrderExecution(3);
+    return this.createObj(`${this.string}.${value}`, 3);
   },
 
-  attr(/* value */) {
-    throw new Error('Not implemented');
+  attr(value) {
+    this.checkOrderExecution(4);
+    return this.createObj(`${this.string}[${value}]`, 4);
   },
 
-  pseudoClass(/* value */) {
-    throw new Error('Not implemented');
+  pseudoClass(value) {
+    this.checkOrderExecution(5);
+    return this.createObj(`${this.string}:${value}`, 5);
   },
 
-  pseudoElement(/* value */) {
-    throw new Error('Not implemented');
+  pseudoElement(value) {
+    this.checkOrderExecution(6);
+    return this.createObj(`${this.string}::${value}`, 6);
   },
 
-  combine(/* selector1, combinator, selector2 */) {
-    throw new Error('Not implemented');
+  combine(selector1, combinator, selector2) {
+    return {
+      string: `${selector1.string} ${combinator} ${selector2.string}`,
+      __proto__: this,
+    };
+  },
+
+  stringify() {
+    return this.string;
+  },
+
+  createObj(string, orderNum) {
+    return {
+      string,
+      orderNum,
+      __proto__: this,
+    };
+  },
+
+  checkOrderExecution(order) {
+    if (this.orderNum === order && [1, 2, 6].includes(order)) {
+      throw new Error('Element, id and pseudo-element should not occur more then one time inside the selector');
+    }
+    if (this.orderNum > order) {
+      throw new Error('Selector parts should be arranged in the following order: element, id, class, attribute, pseudo-class, pseudo-element');
+    }
   },
 };
 
